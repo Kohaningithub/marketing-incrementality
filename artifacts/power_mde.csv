@@ -1,0 +1,5 @@
+arm,alpha,target_power,mde_absolute,mde_relative,planned_relative_lift,power_at_planned_lift,required_treatment_n,method
+Mens E-Mail,0.05,0.8,0.0022298846139815046,0.38942558676631095,0.2,0.3214784543318377,74763,Two-sided normal approximation with arcsine effect size; baseline estimated from this control sample
+Mens E-Mail,0.025,0.8,0.0024739613878461708,0.4320509945036927,0.2,0.22799518549057313,90538,Two-sided normal approximation with arcsine effect size; baseline estimated from this control sample
+Womens E-Mail,0.05,0.8,0.002227628729196959,0.3890316205268066,0.2,0.32197883786839426,74903,Two-sided normal approximation with arcsine effect size; baseline estimated from this control sample
+Womens E-Mail,0.025,0.8,0.002471441413640899,0.43161090786092615,0.2,0.22841798739243266,90708,Two-sided normal approximation with arcsine effect size; baseline estimated from this control sample

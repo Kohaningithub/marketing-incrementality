@@ -1,0 +1,16 @@
+{
+  "participants": 64000,
+  "allocation": {
+    "Womens E-Mail": 21387,
+    "Mens E-Mail": 21307,
+    "No E-Mail": 21306
+  },
+  "srm_p_value": 0.9036929575604196,
+  "max_absolute_smd": 0.016359543173779502,
+  "outcome_window_days": 14,
+  "customer_id_status": "Source-row surrogate; true customer duplicates are not identifiable",
+  "confidence_intervals": "Marginal 95%; Newcombe score difference for binary outcomes; Welch t for revenue",
+  "multiple_testing": "Holm within each two-arm outcome family; BH over all exploratory segment interactions",
+  "causal_scope": "ITT within the released randomized email experiment; no cross-dataset linkage",
+  "iroas_status": "Unavailable: experiment has no campaign costs"
+}

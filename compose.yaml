@@ -1,0 +1,21 @@
+services:
+  airflow:
+    build: .
+    command: standalone
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      MEASUREMENT_ROOT: /opt/project
+      MEASUREMENT_BACKEND: ${MEASUREMENT_BACKEND:-local}
+      GCP_PROJECT_ID: ${GCP_PROJECT_ID:-}
+      BQ_DATASET: ${BQ_DATASET:-marketing_measurement}
+      BQ_LOCATION: ${BQ_LOCATION:-US}
+    volumes:
+      - ./data:/opt/project/data
+      - ./outputs:/opt/project/outputs
+      - ./dags:/opt/airflow/dags:ro
+      - airflow_state:/opt/airflow
+    restart: "no"
+volumes:
+  airflow_state:

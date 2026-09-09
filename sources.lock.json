@@ -1,0 +1,37 @@
+{
+  "criteo_revision": "a8bfbf89a613394ee996f511f029be3adce84906",
+  "criteo_files": [
+    {
+      "path": "default/train/0000.parquet",
+      "sha256": "2e83aefd31ff05395303cf248547d1630622ba9d213573d697903f47f3d58707",
+      "bytes": 138044544
+    },
+    {
+      "path": "default/train/0001.parquet",
+      "sha256": "d4558772f4857786da93f562f853967d66885eef909eedbb49b2ddfffd47cd4b",
+      "bytes": 138269420
+    },
+    {
+      "path": "default/train/0002.parquet",
+      "sha256": "66e8791fd73ef8e305f63ba53c587122a5476ad6057b09ae7ca100cff1c533ed",
+      "bytes": 137319188
+    },
+    {
+      "path": "default/train/0003.parquet",
+      "sha256": "a160ec733fcea85de0e3d03edaf9dfb109fe832c803ea5fc42c109af93090f30",
+      "bytes": 139353848
+    },
+    {
+      "path": "default/train/0004.parquet",
+      "sha256": "bc6b461aab9e9c8b775c49faba5c7646a599e239441db5519288cbfe112b73a7",
+      "bytes": 138161674
+    },
+    {
+      "path": "default/train/0005.parquet",
+      "sha256": "d6f00643ebe64c022bba258c0954ce66866feca73ccb631214222875f9e3e891",
+      "bytes": 107262857
+    }
+  ],
+  "hillstrom_url": "http://www.minethatdata.com/Kevin_Hillstrom_MineThatData_E-MailAnalytics_DataMiningChallenge_2008.03.20.csv",
+  "hillstrom_sha256": "0e5893329d8b93cefecc571777672028290ab69865718020c78c7284f291aece"
+}

@@ -1,0 +1,50 @@
+{
+  "raw_impressions": 16468027,
+  "clean_impressions": 16468027,
+  "rejected_or_replayed_rows": 0,
+  "unique_users": 6142256,
+  "campaigns": 675,
+  "click_indicators": 5947563,
+  "unique_conversions": 438730,
+  "conversion_identity_conflicts": 2910,
+  "conversion_identity_policy": "Source conversion_id is reused across distinct users/times. Canonical key is (conversion_id,user_id,conversion_seconds); ambiguous source IDs retained in conversion_conflicts for audit.",
+  "canonical_conversion_key_duplicates": 0,
+  "source_min_seconds": 0,
+  "source_max_seconds": 2671199,
+  "duplicate_event_ids": 0,
+  "conversion_join_loss": 0,
+  "attribution_weight_errors": 0,
+  "window_errors": 0,
+  "mart_conservation_error": 0,
+  "conversion_labels_after_impression_coverage": 87407,
+  "late_event_rate": null,
+  "late_event_status": "Not observable: publisher has no arrival timestamps; local download time is not event arrival time",
+  "missing_event_rate": null,
+  "missing_event_status": "Not identifiable in a publisher-subsampled historical release",
+  "attribution_windows": [
+    {
+      "window_days": 1,
+      "observed_conversions": 438730,
+      "no_eligible_observed_touch": 210705.0,
+      "publisher_only": 61727.0,
+      "proxy_only": 52595.0,
+      "winner_timestamp_ties": 0.0
+    },
+    {
+      "window_days": 7,
+      "observed_conversions": 438730,
+      "no_eligible_observed_touch": 112297.0,
+      "publisher_only": 28680.0,
+      "proxy_only": 117956.0,
+      "winner_timestamp_ties": 0.0
+    },
+    {
+      "window_days": 30,
+      "observed_conversions": 438730,
+      "no_eligible_observed_touch": 0.0,
+      "publisher_only": 0.0,
+      "proxy_only": 201573.0,
+      "winner_timestamp_ties": 0.0
+    }
+  ]
+}

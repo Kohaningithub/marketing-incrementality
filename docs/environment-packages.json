@@ -1,0 +1,214 @@
+[
+  {
+    "name": "certifi",
+    "version": "2026.7.22"
+  },
+  {
+    "name": "cffi",
+    "version": "2.1.1"
+  },
+  {
+    "name": "charset-normalizer",
+    "version": "3.5.1"
+  },
+  {
+    "name": "colorama",
+    "version": "0.4.6"
+  },
+  {
+    "name": "contourpy",
+    "version": "1.3.3"
+  },
+  {
+    "name": "cryptography",
+    "version": "50.0.1"
+  },
+  {
+    "name": "cycler",
+    "version": "0.12.1"
+  },
+  {
+    "name": "duckdb",
+    "version": "1.5.5"
+  },
+  {
+    "name": "fonttools",
+    "version": "4.64.0"
+  },
+  {
+    "name": "formulaic",
+    "version": "1.2.2"
+  },
+  {
+    "name": "google-api-core",
+    "version": "2.36.0"
+  },
+  {
+    "name": "google-auth",
+    "version": "2.57.1"
+  },
+  {
+    "name": "google-cloud-bigquery",
+    "version": "3.45.0"
+  },
+  {
+    "name": "google-cloud-core",
+    "version": "2.7.0"
+  },
+  {
+    "name": "google-crc32c",
+    "version": "1.8.0"
+  },
+  {
+    "name": "google-resumable-media",
+    "version": "2.10.2"
+  },
+  {
+    "name": "googleapis-common-protos",
+    "version": "1.75.3"
+  },
+  {
+    "name": "grpcio",
+    "version": "1.83.1"
+  },
+  {
+    "name": "grpcio-status",
+    "version": "1.83.1"
+  },
+  {
+    "name": "idna",
+    "version": "3.19"
+  },
+  {
+    "name": "iniconfig",
+    "version": "2.3.0"
+  },
+  {
+    "name": "interface_meta",
+    "version": "2.0.1"
+  },
+  {
+    "name": "kiwisolver",
+    "version": "1.5.1"
+  },
+  {
+    "name": "marketing-incrementality",
+    "version": "0.1.0"
+  },
+  {
+    "name": "matplotlib",
+    "version": "3.11.1"
+  },
+  {
+    "name": "narwhals",
+    "version": "2.26.0"
+  },
+  {
+    "name": "numpy",
+    "version": "2.5.3"
+  },
+  {
+    "name": "opentelemetry-api",
+    "version": "1.44.0"
+  },
+  {
+    "name": "packaging",
+    "version": "26.3"
+  },
+  {
+    "name": "pandas",
+    "version": "3.0.5"
+  },
+  {
+    "name": "patsy",
+    "version": "1.0.3"
+  },
+  {
+    "name": "pillow",
+    "version": "12.3.0"
+  },
+  {
+    "name": "pip",
+    "version": "25.3"
+  },
+  {
+    "name": "pluggy",
+    "version": "1.6.0"
+  },
+  {
+    "name": "proto-plus",
+    "version": "1.28.4"
+  },
+  {
+    "name": "protobuf",
+    "version": "7.36.1"
+  },
+  {
+    "name": "pyarrow",
+    "version": "25.0.1"
+  },
+  {
+    "name": "pyasn1",
+    "version": "0.6.4"
+  },
+  {
+    "name": "pyasn1_modules",
+    "version": "0.4.2"
+  },
+  {
+    "name": "pycparser",
+    "version": "3.0"
+  },
+  {
+    "name": "Pygments",
+    "version": "2.21.0"
+  },
+  {
+    "name": "pyparsing",
+    "version": "3.3.2"
+  },
+  {
+    "name": "pytest",
+    "version": "9.1.1"
+  },
+  {
+    "name": "python-dateutil",
+    "version": "2.9.0.post0"
+  },
+  {
+    "name": "requests",
+    "version": "2.34.2"
+  },
+  {
+    "name": "scipy",
+    "version": "1.18.1"
+  },
+  {
+    "name": "six",
+    "version": "1.17.0"
+  },
+  {
+    "name": "sqlglot",
+    "version": "30.18.0"
+  },
+  {
+    "name": "statsmodels",
+    "version": "0.15.0"
+  },
+  {
+    "name": "typing_extensions",
+    "version": "4.16.0"
+  },
+  {
+    "name": "tzdata",
+    "version": "2026.3"
+  },
+  {
+    "name": "urllib3",
+    "version": "2.7.0"
+  },
+  {
+    "name": "wrapt",
+    "version": "2.4.1rc1"
+  }
+]
