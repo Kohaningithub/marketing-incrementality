@@ -1,5 +1,7 @@
 # Marketing Incrementality & Attribution Measurement
 
+**在线查看：[交互分析报告](https://kohaningithub.github.io/marketing-incrementality/)**
+
 使用完整真实数据构建的营销衡量项目：Python 清洗、SQL 事件归因、随机实验增量分析、BigQuery 部署脚本和 Airflow DAG。所有分析输入均为真实公开记录，没有模拟 impressions、clicks、conversions、spend 或 revenue。
 
 **先看结果：** 随项目保存的 [交互分析报告](artifacts/report.html)、[中文结果摘要](artifacts/findings.md)、[实际执行记录](docs/VALIDATION.md)。完整复现命令在下方。报告可离线打开，包含 campaign 筛选、窗口切换、实验置信区间和 QA。重新运行的结果写入 `outputs/`；使用 `python scripts/save_artifacts.py` 更新可分享快照。
