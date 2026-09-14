@@ -1,0 +1,27 @@
+{
+  "repo": "criteo/criteo-uplift",
+  "revision": "a2858f3f05e3f8602c1d57db0217df40139e1c4b",
+  "expected_rows": 13979592,
+  "files": [
+    {
+      "path": "default/train/0000.parquet",
+      "sha256": "5fd12ccdfc1aa084b4c22b2a7b13655a56812cf2018d04c27a3cadb8a4f28fee",
+      "bytes": 87902885
+    },
+    {
+      "path": "default/train/0001.parquet",
+      "sha256": "59364d8791d04e4ff1408a2720b75555cf184be7e1b779cb7eb82db50ad58771",
+      "bytes": 91728529
+    },
+    {
+      "path": "default/train/0002.parquet",
+      "sha256": "ad6295daa66c680d82cefd422cd95e78cd186215cd8e8ea09f9c07110efc90da",
+      "bytes": 104249977
+    },
+    {
+      "path": "default/train/0003.parquet",
+      "sha256": "7c8c947589319b770338a640699ff1c5fce1bbcb5d049b7baec1311099b1b6af",
+      "bytes": 55736869
+    }
+  ]
+}

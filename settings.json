@@ -1,0 +1,12 @@
+{
+  "uplift_model_fraction": 0.2,
+  "train_fraction": 0.6,
+  "validation_fraction": 0.2,
+  "test_fraction": 0.2,
+  "seed": 20260914,
+  "model_iterations": [60, 120],
+  "model_learning_rate": 0.08,
+  "model_max_leaf_nodes": 15,
+  "health_lookback_days": 7,
+  "health_z_threshold": 3.0
+}

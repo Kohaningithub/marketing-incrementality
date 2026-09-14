@@ -1,0 +1,13 @@
+{
+  "attribution_rows": 16468027,
+  "uplift_full_rows": 13979592,
+  "uplift_model_rows": 2797402,
+  "uplift_test_rows": 559064,
+  "publisher_conversions": 237157,
+  "last_click_30d": 438730,
+  "conversion_lift_per_100k": 115.1873052131628,
+  "health_review_flags": 5,
+  "test_qini": 0.00040945912737274065,
+  "bigquery_executed": false,
+  "airflow_executed": false
+}

@@ -1,28 +1,17 @@
-# Resume / interview positioning
+# Resume bullets and interview explanation
 
-## Current, verified scope
+Use 3–5 bullets appropriate to space. Describe implementation separately from unverified deployment.
 
-**Marketing Incrementality & Attribution Measurement** — Python, SQL, DuckDB, Experimentation; BigQuery & Airflow deployment configuration
+- Built a reproducible Python/SQL advertising-measurement pipeline over 16.47M real Criteo impressions, with canonical conversion deduplication, four attribution windows, campaign reconciliation and automated QA.
+- Reconciled publisher, first-click, last-click and linear credit definitions across 675 campaigns; quantified an 85% 30-day proxy-versus-publisher gap while distinguishing attribution credit from causal impact.
+- Analyzed 13.98M Criteo experiment records using assignment-based contrasts, Newcombe confidence intervals, feature balance and exposure diagnostics; reported +115 conversion contrasts per 100k with explicit public-sampling limitations.
+- Developed a T-learner on 2.80M real records with feature-group train/validation/test splits; evaluated held-out Qini/AUUC and treatment-effect deciles on 559k records, exposing non-monotonic targeting performance.
+- Implemented prospective power/MDE planning, daily measurement-health checks, BigQuery-compatible SQL and a modular Airflow DAG; verified local execution and published an auditable GitHub Pages report.
 
-- Built and ran a real-data measurement pipeline across 16.47M advertising impressions and 64K randomized experiment participants; implemented event cleaning, canonical conversion identities, 1/7/30-day attribution windows, and campaign/day/context reporting.
-- Identified 2,910 reused source conversion IDs and prevented cross-user/time merges with composite conversion keys; reconciled attribution weights, window eligibility, conversion joins and campaign marts with automated QA.
-- Estimated intent-to-treat conversion and revenue lift, 95% confidence intervals, covariate balance, power/MDE and audience heterogeneity; prepared BigQuery load/transformation scripts and an Airflow DAG with retries and reporting gates.
+## 60-second interview explanation
 
-Keep cloud status explicit until BigQuery jobs and the Airflow DAG have actually run. Do not imply the independent event and experiment datasets are linked.
+I built this project around three measurement questions: who gets attribution credit, what changes with randomized treatment assignment, and why those answers differ. I used two independent public Criteo releases, never joined them. On 16.5 million impressions, I reconstructed source-linked conversion paths and compared publisher, first-click, last-click and linear definitions across four windows. The 30-day proxy credited 85% more conversions than the publisher benchmark, but that is a definition gap—not causal overstatement. On 14 million experiment records, I estimated assignment-based conversion and visit effects with confidence intervals, checked feature balance and separated assignment from exposure. I then evaluated a T-learner on a held-out test set and built power and monitoring tools. The important judgment was recognizing public-sampling limitations, preserving null results, and refusing to invent ROI. The local pipeline ran; BigQuery and Airflow are implemented but not runtime-verified.
 
-## 中文面试讲法
+## 中文面试口述
 
-这个项目的重点是“归因与因果的区别”，以及在真实数据不完整的条件下如何保证工程和统计结果可信。
-
-1. 数据方面：全部输入来自公开真实数据。广告事件数据没有随机 holdout；随机邮件实验没有点击时间线和投放成本。因此我用两条独立分析路径覆盖不同能力，而不是把不存在的关系拼接出来。
-2. 清洗方面：全量 QA 发现 2,910 个 conversion ID 在不同用户/时间中重复。直接 group by conversion_id 会误合并；我改用组合键并保存冲突审计。Impression 的来源行键用于防止重复 ingestion，不用于声称恢复真实 user identity。
-3. 实验方面：以随机 assignment 为依据做 ITT，不筛掉没有点击或访问的人。男女装邮件分别提高 conversion rate 约 0.681 / 0.311 个百分点；新客、历史渠道和城乡差异通过 interaction tests 和多重检验校正检查。
-4. 商业方面：处理组全部收入相对因果增量收入约为 1.85x / 2.54x，但不能将它称作 last-click 高估率。没有真实投放成本就不填 ROAS，也不假装已经实现 budget optimization。
-5. 工程方面：本地 SQL/分析已运行；BigQuery 和 Airflow 的代码配置准备完毕。未来真实部署后，再补充 job IDs、运行日志、数据新鲜度和故障恢复证据。
-
-## Do not claim yet
-
-- Production BigQuery deployment, live Airflow operation or continuous monitoring.
-- Campaign-level causal ROAS from the Criteo event release.
-- Exact last-click timestamp reconstruction, real geographic targeting from anonymized Criteo categories, or actual observed late-arrival rates.
-- Budget savings, profitability improvement or experimentally validated targeting policy from this offline analysis.
+我把项目围绕三个问题来做：广告拿到多少归因 credit，随机分配处理后结果改变多少，以及为什么不同测量定义会给出不同答案。我用了两份独立的真实 Criteo 数据，没有把它们拼成同一个实验。对约 1,647 万条 impression，我构建了 canonical conversion path，比较四种归因定义和四个窗口。30 天 proxy 比 publisher 多 85% credit，但我明确区分了定义差异和因果高估。另一份约 1,398 万条实验记录用于 assignment-based lift、置信区间、balance 和 exposure 检查；再用独立测试集评估 uplift 模型，同时做 power/MDE 和日级监控。最重要的是公开抽样限制、模型的非单调结果和不虚构 ROI。Python/DuckDB 全流程已运行，BigQuery 和 Airflow 只描述为已实现配置。

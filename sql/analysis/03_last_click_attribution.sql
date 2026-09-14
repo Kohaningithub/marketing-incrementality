@@ -1,0 +1,3 @@
+CREATE OR REPLACE VIEW last_click_attribution AS
+SELECT window_days,conversion_key,event_id,campaign_id,relative_day,attribution_weight
+FROM last_click_proxy;

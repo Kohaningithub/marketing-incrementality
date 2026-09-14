@@ -1,0 +1,7 @@
+split,treatment,n,conversions
+test,0,83664,151
+test,1,475400,1502
+train,0,251858,467
+train,1,1426775,4525
+validation,0,83919,147
+validation,1,475786,1454

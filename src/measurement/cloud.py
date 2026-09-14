@@ -4,7 +4,9 @@ import re
 import uuid
 from pathlib import Path
 
-TABLES = ['raw_criteo','impressions','conversion_conflicts','conversions','clicks','events','attribution_candidates','last_click_proxy','campaign_daily','attribution_qa']
+from measurement.reconciliation import TABLES as ANALYSIS_TABLES
+
+TABLES = ['raw_criteo','impressions','conversion_conflicts','conversions','clicks','events','attribution_candidates','last_click_proxy','campaign_daily','attribution_qa'] + ANALYSIS_TABLES
 
 def identifiers(project, dataset):
     if not re.fullmatch(r'[a-z][a-z0-9-]{4,61}[a-z0-9]',project): raise ValueError('Invalid GCP project ID')
@@ -17,7 +19,7 @@ def render(root, project, dataset):
     root=Path(root)
     out=root/'outputs/bigquery'
     out.mkdir(parents=True,exist_ok=True)
-    for source in sorted((root/'sql/local').glob('*.sql')):
+    for source in sorted((root/'sql/local').glob('*.sql')) + sorted((root/'sql/analysis').glob('*.sql')):
         statements=[]
         for tree in sqlglot.parse(source.read_text(),read='duckdb'):
             for table in tree.find_all(exp.Table):
@@ -33,8 +35,10 @@ def render(root, project, dataset):
                 sql=re.sub(r'`'+re.escape(project+'.'+dataset+'.'+name)+r'\b(?![\w`])',f'`{project}.{dataset}.{name}`',sql)
             if isinstance(tree,exp.Create) and tree.this.name in ['impressions','campaign_daily']:
                 sql=sql.replace(' AS\n','\nPARTITION BY RANGE_BUCKET(relative_day, GENERATE_ARRAY(0, 32, 1))\nCLUSTER BY campaign_id, context_segment\nAS\n',1)
+            if isinstance(tree,exp.Create) and tree.this.name=='conversion_lag_quantiles':
+                sql=lag_quantiles_sql(project,dataset)
             statements.append(sql+';')
-        (out/source.name).write_text('\n\n'.join(statements),encoding='utf-8')
+        (out/(('analysis_' if source.parent.name=='analysis' else '')+source.name)).write_text('\n\n'.join(statements),encoding='utf-8')
     for source in sorted((root/'sql/bigquery').glob('*.sql')):
         (out/source.name).write_text(source.read_text().replace('__PROJECT__',project).replace('__DATASET__',dataset),encoding='utf-8')
     return out
@@ -78,11 +82,18 @@ def upload(root,project,dataset,location='US'):
         job_records.append({'table':table_id,'job_id':job.job_id,'rows':offset})
     union=' UNION ALL '.join(f'SELECT * FROM `{project}.{dataset}.raw_criteo_{p.stem}`' for p in paths)
     client.query(f'CREATE OR REPLACE VIEW `{project}.{dataset}.raw_criteo` AS {union}').result()
-    participant=root/'data/processed/experiment_participants.parquet'
-    if not participant.exists(): raise ValueError('Run experiment cleaning before upload')
-    with participant.open('rb') as f:
-        job=client.load_table_from_file(f,f'{project}.{dataset}.experiment_participants',job_config=config)
-        job.result()
+    uplift_lock=json.loads((root/'uplift.lock.json').read_text())
+    uplift_paths=[]
+    for meta in uplift_lock['files']:
+        path=root/'data/raw/uplift'/Path(meta['path']).name
+        if sha256(path)!=meta['sha256']: raise ValueError(f'Uplift checksum changed: {path.name}')
+        table_id=f'{project}.{dataset}.raw_uplift_{path.stem}'
+        with path.open('rb') as f:
+            job=client.load_table_from_file(f,table_id,job_config=config);job.result()
+        job_records.append({'table':table_id,'job_id':job.job_id,'rows':pq.ParquetFile(path).metadata.num_rows})
+        uplift_paths.append(table_id)
+    union=' UNION ALL '.join(f'SELECT * FROM `{name}`' for name in uplift_paths)
+    client.query(f'CREATE OR REPLACE VIEW `{project}.{dataset}.uplift_raw` AS {union}').result()
     (root/'outputs/bigquery_load_jobs.json').write_text(json.dumps(job_records,indent=2),encoding='utf-8')
 
 def execute(root,project,dataset,location='US',qa_only=False,maximum_bytes_billed=5_000_000_000,dry_run=False):
@@ -91,7 +102,7 @@ def execute(root,project,dataset,location='US',qa_only=False,maximum_bytes_bille
     root=Path(root)
     directory=render(root,project,dataset)
     client=client_for(project,location)
-    files=[directory/'03_qa.sql'] if qa_only else [directory/'01_clean.sql',directory/'02_attribution.sql',directory/'04_experiment.sql']
+    files=[directory/'03_qa.sql'] if qa_only else [directory/'01_clean.sql',directory/'02_attribution.sql'] + sorted(directory.glob('analysis_*.sql')) + [directory/'08_criteo_uplift.sql']
     results=[]
     for path in files:
         # Sequential statements preserve dependencies and record actual query job IDs.
@@ -103,3 +114,13 @@ def execute(root,project,dataset,location='US',qa_only=False,maximum_bytes_bille
     name='bigquery_qa_jobs.json' if qa_only else 'bigquery_transform_jobs.json'
     (root/'outputs'/name).write_text(json.dumps(results,indent=2),encoding='utf-8')
     return results
+
+
+def lag_quantiles_sql(project,dataset):
+    """GoogleSQL exact percentiles are analytic functions; DuckDB uses aggregates."""
+    selects=[]
+    for label,col in [('last_clicked_impression_to_conversion','last_clicked_impression_seconds'),('first_linked_impression_to_conversion','first_impression_seconds')]:
+        value=f'(conversion_seconds-{col})/86400.0'
+        expressions=', '.join(f'PERCENTILE_CONT({value},{q}) OVER() AS {name}' for q,name in [(.5,'median_days'),(.75,'p75_days'),(.9,'p90_days'),(.95,'p95_days')])
+        selects.append(f"SELECT DISTINCT '{label}' AS lag_definition,COUNT(*) OVER() AS conversions,{expressions} FROM `{project}.{dataset}.conversion_paths` WHERE {col} IS NOT NULL")
+    return f'CREATE OR REPLACE TABLE `{project}.{dataset}.conversion_lag_quantiles` AS '+ ' UNION ALL '.join(selects)

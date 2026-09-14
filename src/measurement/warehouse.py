@@ -51,7 +51,7 @@ def transform(root):
     for table in ['conversions', 'last_click_proxy', 'campaign_daily', 'attribution_qa']:
         dest = (root / f'data/processed/{table}.parquet').resolve().as_posix().replace("'", "''")
         con.execute(f"COPY {table} TO '{dest}' (FORMAT PARQUET)")
-    print('Built 1/7/30-day attribution marts', flush=True)
+    print('Built 1/7/14/30-day attribution marts', flush=True)
     con.close()
 
 def qa(root):

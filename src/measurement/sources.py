@@ -39,7 +39,7 @@ def download(url, path, expected=None):
         raise ValueError(f"Checksum mismatch: {path.name}")
     part.replace(path)
 
-def ingest(root):
+def ingest(root, include_hillstrom=True):
     root = Path(root)
     raw = root / "data/raw"
     raw.mkdir(parents=True, exist_ok=True)
@@ -64,24 +64,25 @@ def ingest(root):
         download(url, dest, f["sha256"])
         print(f"Verified {dest.name}: {dest.stat().st_size:,} bytes", flush=True)
         return {"dataset": "criteo", "url": url, "file": str(dest.relative_to(root)), "sha256": sha256(dest), "bytes": dest.stat().st_size}
-    hill = raw / "hillstrom.csv"
-    errors = []
-    for url in [lock["hillstrom_url"]] if "hillstrom_url" in lock else HILL_URLS:
-        try:
-            download(url, hill, lock.get("hillstrom_sha256"))
-            if not hill.read_text(encoding="utf-8-sig").lower().startswith('recency,history_segment,history,'):
-                raise ValueError("Unexpected Hillstrom schema/content")
-            lock.update(hillstrom_url=url, hillstrom_sha256=sha256(hill))
-            break
-        except (requests.RequestException, ValueError) as exc:
-            errors.append(f"{url}: {type(exc).__name__}")
-    else:
-        raise RuntimeError("No verified Hillstrom download: " + "; ".join(errors))
+    if include_hillstrom:
+        hill = raw / "hillstrom.csv"
+        errors = []
+        for url in [lock["hillstrom_url"]] if "hillstrom_url" in lock else HILL_URLS:
+            try:
+                download(url, hill, lock.get("hillstrom_sha256"))
+                if not hill.read_text(encoding="utf-8-sig").lower().startswith('recency,history_segment,history,'):
+                    raise ValueError("Unexpected Hillstrom schema/content")
+                lock.update(hillstrom_url=url, hillstrom_sha256=sha256(hill))
+                break
+            except (requests.RequestException, ValueError) as exc:
+                errors.append(f"{url}: {type(exc).__name__}")
+        else:
+            raise RuntimeError("No verified Hillstrom download: " + "; ".join(errors))
     if not lock_path.exists():
         lock_path.write_text(json.dumps(lock, indent=2), encoding="utf-8")
     with ThreadPoolExecutor(max_workers=3) as pool:
         records = list(pool.map(get_shard, lock["criteo_files"]))
-    records.append({"dataset": "hillstrom", "url": lock["hillstrom_url"], "file": "data/raw/hillstrom.csv", "sha256": sha256(hill), "bytes": hill.stat().st_size})
-    manifest = {"verified_at_utc": datetime.now(timezone.utc).isoformat(), "coverage": "all six publisher parquet shards; all Hillstrom customers", "files": records}
+    if include_hillstrom: records.append({"dataset": "hillstrom", "url": lock["hillstrom_url"], "file": "data/raw/hillstrom.csv", "sha256": sha256(hill), "bytes": hill.stat().st_size})
+    manifest = {"verified_at_utc": datetime.now(timezone.utc).isoformat(), "coverage": "all six publisher attribution shards" + ("; all Hillstrom customers" if include_hillstrom else ""), "files": records}
     (raw / "manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
     return manifest

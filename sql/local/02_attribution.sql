@@ -11,7 +11,7 @@ SELECT w.window_days, c.conversion_key, c.conversion_id, c.user_id, c.conversion
        COUNT(*) OVER (PARTITION BY w.window_days, c.conversion_key, i.impression_seconds) AS timestamp_ties
 FROM conversions c JOIN impressions i
   ON c.conversion_key = i.conversion_key
-CROSS JOIN (VALUES (1), (7), (30)) AS w(window_days)
+CROSS JOIN (VALUES (1), (7), (14), (30)) AS w(window_days)
 WHERE i.click = 1 AND c.conversion_seconds - i.impression_seconds
       BETWEEN 0 AND w.window_days * 86400;
 
@@ -39,7 +39,7 @@ SELECT t.*, w.window_days, CAST(NULL AS VARCHAR) AS geo,
        CAST(NULL AS DOUBLE) AS attributed_roas,
        CAST(NULL AS DOUBLE) AS incremental_roas,
        'Unavailable: no sales revenue or linked randomized holdout; cost is transformed' AS roas_status
-FROM traffic t CROSS JOIN (VALUES (1), (7), (30)) AS w(window_days)
+FROM traffic t CROSS JOIN (VALUES (1), (7), (14), (30)) AS w(window_days)
 LEFT JOIN attributed a ON t.campaign_id = a.campaign_id AND t.relative_day = a.relative_day
   AND t.context_segment = a.context_segment AND w.window_days = a.window_days;
 
@@ -49,6 +49,6 @@ SELECT w.window_days, COUNT(*) AS observed_conversions,
        SUM(CASE WHEN c.publisher_attribution = 1 AND p.conversion_id IS NULL THEN 1 ELSE 0 END) AS publisher_only,
        SUM(CASE WHEN c.publisher_attribution = 0 AND p.conversion_id IS NOT NULL THEN 1 ELSE 0 END) AS proxy_only,
        SUM(CASE WHEN p.timestamp_ties > 1 THEN 1 ELSE 0 END) AS winner_timestamp_ties
-FROM conversions c CROSS JOIN (VALUES (1), (7), (30)) AS w(window_days)
+FROM conversions c CROSS JOIN (VALUES (1), (7), (14), (30)) AS w(window_days)
 LEFT JOIN last_click_proxy p ON c.conversion_key = p.conversion_key AND w.window_days = p.window_days
 GROUP BY w.window_days;

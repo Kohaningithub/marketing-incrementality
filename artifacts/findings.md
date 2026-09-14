@@ -1,3 +1,5 @@
+> Supplementary earlier Criteo + Hillstrom snapshot. Current main results: report.html and tables/.
+
 # 实际运行结果 / Marketing Incrementality
 
 完整 Criteo 发布数据：16,468,027 impressions、5,947,563 click indicators、438,730 distinct conversions、675 campaigns。

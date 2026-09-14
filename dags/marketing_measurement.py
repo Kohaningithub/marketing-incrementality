@@ -19,8 +19,12 @@ def cloud_args():
 def marketing_measurement():
     @task
     def ingestion():
-        from measurement.sources import ingest
-        ingest(ROOT)
+        from measurement.pipeline import ingest_all
+        ingest_all(ROOT)
+    @task
+    def validate():
+        from measurement.pipeline import validate_sources
+        validate_sources(ROOT)
     @task
     def cleaning():
         from measurement.warehouse import clean
@@ -35,13 +39,26 @@ def marketing_measurement():
         qa(ROOT)
     @task
     def experimentation():
-        from measurement.experiment import analyze
-        analyze(ROOT)
+        from measurement.criteo_experiment import analyze_criteo
+        analyze_criteo(ROOT)
     @task
     def reporting():
-        from measurement.reporting import report
+        from measurement.science_report import report
         report(ROOT)
-    chain=ingestion() >> cleaning() >> sql_transformation() >> quality_checks() >> experimentation()
+    @task
+    def attribution_and_daily_metrics():
+        from measurement.reconciliation import run_sql
+        run_sql(ROOT)
+    @task
+    def measurement_health():
+        from measurement.reconciliation import health
+        health(ROOT)
+    @task
+    def uplift_evaluation():
+        from measurement.uplift_model import fit_uplift
+        fit_uplift(ROOT)
+    # Sequential DuckDB writers avoid database locking; no credentials in XCom.
+    chain=ingestion() >> validate() >> cleaning() >> sql_transformation() >> attribution_and_daily_metrics() >> quality_checks() >> measurement_health() >> experimentation() >> uplift_evaluation()
     if BACKEND=='bigquery':
         @task
         def bigquery_ingestion():

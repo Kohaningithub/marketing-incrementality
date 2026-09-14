@@ -1,0 +1,19 @@
+{
+  "rows": 13979592,
+  "coverage": "full four-shard publisher release",
+  "treatment_n": 11882655,
+  "control_n": 2096937,
+  "treatment_fraction": 0.8500001287591226,
+  "exposure_given_treatment": 0.036036727482199896,
+  "exposure_given_control": 0.0,
+  "rounded_allocation_reference": 0.85,
+  "allocation_reference_p": 0.9994023627106681,
+  "srm_status": "Not a confirmatory SRM test: .85 is a rounded release statistic, original assignment probabilities and trial IDs unavailable",
+  "max_absolute_smd": 0.04883634060877185,
+  "missing_feature_values": 0,
+  "invalid_assignment_outcome_rows": 0,
+  "causal_scope": "Assignment-based benchmark contrast. Non-uniform release sampling prevents recovery of original population incrementality.",
+  "iv_status": "Not estimated: exclusion, monotonicity and sampling assumptions cannot be verified from anonymized release",
+  "cloud_executed": false,
+  "airflow_executed": false
+}

@@ -39,6 +39,14 @@
       "winner_timestamp_ties": 0.0
     },
     {
+      "window_days": 14,
+      "observed_conversions": 438730,
+      "no_eligible_observed_touch": 63464.0,
+      "publisher_only": 15305.0,
+      "proxy_only": 153414.0,
+      "winner_timestamp_ties": 0.0
+    },
+    {
       "window_days": 30,
       "observed_conversions": 438730,
       "no_eligible_observed_touch": 0.0,
