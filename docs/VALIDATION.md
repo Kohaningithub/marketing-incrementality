@@ -30,3 +30,10 @@ python scripts/save_artifacts.py
 ```
 
 `measurement-demo-2026` is a render-only example identifier. For real cloud jobs, follow `DEPLOYMENT.md` with your own project and ADC. The report's execution-status labels deliberately stay unverified until actual service evidence is available.
+
+
+## September 15 incremental validation
+
+Full attribution analysis reran on the same 16,468,027 impressions, extending SQL eligibility/share exports and campaign observed-conversion denominators. Qualified ranking analysis uses 286 campaigns across all four windows and three metrics. Existing full Criteo uplift/Hillstrom analyses were preserved; no retraining or new synthetic results were needed.
+
+Local suite: **20 passed, 1 skipped** (Airflow unavailable), including a new offline rank-reversal/cohort/constant-vector test. GoogleSQL round-trip coverage now includes attribution_reconciliation. Nine figure groups are generated, with volume-qualified campaign rank chart and three-method-metric correlation matrices. Publisher eligibility is intentionally NULL; constant share correlations remain NULL.

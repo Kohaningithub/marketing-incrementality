@@ -32,7 +32,7 @@ Existing `src/measurement/` architecture is retained. `sql/local/` cleans events
 
 30-day last-click proxy credits **438,730** conversions versus **237,157** publisher-credited conversions: **+85.0%**, a definition gap, not causal overstatement. A 1-day window credits 228,025. The last clicked-impression lag has median 0.86 and p95 23.61 days.
 
-No source-linked conversion path spans multiple campaigns. Thus first/last/linear campaign credit agrees within a window; publisher/window comparisons provide the actual rank instability. Compare definitions before optimizing campaign budgets.
+No source-linked conversion path spans multiple campaigns. Thus first/last/linear campaign credit agrees within a window; publisher/window comparisons provide the actual rank instability. Among 286 campaigns meeting fixed volume thresholds, 30-day proxy versus Criteo rank correlation is **0.9247** for conversion counts (max shift **100** places; 9/10 top-10 overlap) and **0.8462** for transformed CPA (max shift **146**). Compare definitions before optimizing campaign budgets.
 
 ## Incrementality case study
 
@@ -64,7 +64,7 @@ python scripts/save_artifacts.py
 python -m http.server 8766 --bind 127.0.0.1 --directory artifacts
 ```
 
-Open `http://127.0.0.1:8766/report.html`. No GCP account required. `run` verifies cached source hashes and reuses versioned completed stages. `--force` rebuilds local aggregate stages. Uplift model cache keys include model code, source lock and settings; use `settings.json` to change model settings. `python -m pytest tests/test_science.py -q` runs small deterministic fixtures with no downloads.
+Open `http://127.0.0.1:8766/report.html`. No GCP account required. `run` verifies cached source hashes and reuses versioned completed stages. `--force` rebuilds local aggregate stages. Uplift model cache keys include model code, source lock and settings; use `settings.json` to change model settings; `ranking.settings.json` controls the independent campaign volume screen. `python -m pytest tests/test_science.py -q` runs small deterministic fixtures with no downloads.
 
 ## Limitations / key takeaways
 

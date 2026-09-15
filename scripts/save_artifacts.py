@@ -3,7 +3,7 @@ from pathlib import Path
 import shutil
 root=Path(__file__).resolve().parents[1]
 dest=root/'artifacts';dest.mkdir(exist_ok=True)
-for name in ['report.html','qa.json','reconciliation_summary.json','criteo_experiment_summary.json','uplift_summary.json','delivery_summary.json']:
+for name in ['report.html','qa.json','reconciliation_summary.json','criteo_experiment_summary.json','uplift_summary.json','delivery_summary.json','ranking_summary.json']:
     shutil.copy2(root/'outputs'/name,dest/name)
 for directory,extension in [('tables','*.csv'),('figures','*.png')]:
     target=dest/directory;target.mkdir(exist_ok=True)

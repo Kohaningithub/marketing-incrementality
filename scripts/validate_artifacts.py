@@ -28,6 +28,14 @@ windows=read('window_comparison');campaign=read('campaign_reconciliation')
 for (m,w),rows in campaign.groupby(['model','window_days']):
     expected=windows[(windows.model==m)&(windows.window_days==w)].credited_conversions.iloc[0]
     assert np.isclose(rows.credited_conversions.sum(),expected,rtol=1e-10)
+reconciliation=read('attribution_reconciliation')
+assert len(reconciliation)==16
+assert reconciliation[reconciliation.method=='publisher'].eligible_conversions.isna().all()
+assert np.allclose(reconciliation.attributed_conversions/reconciliation.observed_conversions,reconciliation.share_of_observed_conversions)
+ranks=read('campaign_ranking_comparison');pairs=read('campaign_rank_correlations')
+assert ranks.campaign_id.nunique()==load('ranking_summary')['eligible_campaigns']==286
+assert pairs.spearman_rho.dropna().between(-1,1).all()
+assert np.allclose(ranks.absolute_rank_change.dropna(),ranks.rank_change_vs_criteo.dropna().abs())
 curve=read('uplift_curve')
 assert np.isclose(curve.incremental_per_person.iloc[-1],model['treated_all_gain_per_person'])
 assert np.allclose(curve.incremental_per_person-curve.random_per_person,curve.qini_gain_per_person)

@@ -114,7 +114,7 @@ def test_all_analytical_bigquery_sql_round_trip_on_fixture(raw):
             if isinstance(tree,exp.Create): tree.set('properties',None)
             for tab in tree.find_all(exp.Table): tab.set('catalog',None);tab.set('db',None)
             other.execute(tree.sql(dialect='duckdb'))
-    for name in ['first_click_attribution','last_click_attribution','linear_attribution','publisher_attribution','window_comparison','campaign_reconciliation','daily_measurement','conversion_lag_quantiles']:
+    for name in ['first_click_attribution','last_click_attribution','linear_attribution','publisher_attribution','window_comparison','campaign_reconciliation','daily_measurement','conversion_lag_quantiles','attribution_reconciliation']:
         a=raw.execute(f'SELECT * FROM {name} ORDER BY ALL').fetchdf()
         b=other.execute(f'SELECT * FROM {name} ORDER BY ALL').fetchdf()
         pd.testing.assert_frame_equal(a,b,check_dtype=False,atol=1e-8,rtol=1e-8)
@@ -124,3 +124,25 @@ def test_dag_includes_new_stages_without_importing_airflow():
     tree=ast.parse((ROOT/'dags/marketing_measurement.py').read_text())
     names={n.name for n in ast.walk(tree) if isinstance(n,ast.FunctionDef)}
     assert {'validate','attribution_and_daily_metrics','measurement_health','uplift_evaluation'}<=names
+
+
+def test_ranking_cohort_correlations_and_ties():
+    from measurement.ranking import compare_rankings
+    rows=[]
+    for method,credits in [('publisher',[10,20,30]),('last_click_proxy',[30,20,10])]:
+        for cid,credit in enumerate(credits):
+            rows.append(dict(campaign_id=cid,model=method,window_days=30,impressions=10000,
+                observed_conversions=100,credited_conversions=credit,
+                transformed_cost_per_attributed_conversion=100/credit,attributed_conversion_share=credit/100))
+        rows.append(dict(campaign_id=99,model=method,window_days=30,impressions=9999,
+                observed_conversions=100,credited_conversions=1000,
+                transformed_cost_per_attributed_conversion=.1,attributed_conversion_share=1.))
+    ranks,pairs=compare_rankings(pd.DataFrame(rows))
+    result=pairs.query("metric=='credited_conversions' and method_a=='publisher' and method_b=='last_click_proxy'").iloc[0]
+    assert result.cohort_campaigns==3 and result.paired_campaigns==3
+    assert result.spearman_rho==pytest.approx(-1)
+    assert result.max_absolute_rank_change==2 and result.campaigns_with_rank_change==2
+    assert 99 not in ranks.campaign_id.values
+    frame=pd.DataFrame(rows);frame.loc[frame.model=='last_click_proxy','attributed_conversion_share']=1.
+    _,pairs=compare_rankings(frame)
+    assert pairs.query("metric=='attributed_conversion_share' and method_a=='publisher' and method_b=='last_click_proxy'").spearman_rho.isna().all()

@@ -1,0 +1,17 @@
+method,window_days,eligible_conversions,attributed_conversions,observed_conversions,share_of_observed_conversions,difference_vs_criteo,pct_difference_vs_criteo,eligibility_definition
+first_click_proxy,1,228025,228025.0,438730,0.5197387915118638,-9132.0,-3.850613728458363,Observed clicked-impression proxy eligibility
+first_click_proxy,7,326433,326433.0,438730,0.7440407539944841,89276.0,37.644260974797284,Observed clicked-impression proxy eligibility
+first_click_proxy,14,375266,375266.0,438730,0.8553461126433114,138109.0,58.23526187293649,Observed clicked-impression proxy eligibility
+first_click_proxy,30,438730,438730.0,438730,1.0,201573.0,84.99559363628313,Observed clicked-impression proxy eligibility
+last_click_proxy,1,228025,228025.0,438730,0.5197387915118638,-9132.0,-3.850613728458363,Observed clicked-impression proxy eligibility
+last_click_proxy,7,326433,326433.0,438730,0.7440407539944841,89276.0,37.644260974797284,Observed clicked-impression proxy eligibility
+last_click_proxy,14,375266,375266.0,438730,0.8553461126433114,138109.0,58.23526187293649,Observed clicked-impression proxy eligibility
+last_click_proxy,30,438730,438730.0,438730,1.0,201573.0,84.99559363628313,Observed clicked-impression proxy eligibility
+linear_proxy,1,228025,228025.0000000722,438730,0.5197387915120284,-9131.999999927793,-3.8506137284279163,Observed clicked-impression proxy eligibility
+linear_proxy,7,326433,326433.00000014016,438730,0.7440407539948035,89276.00000014016,37.64426097485639,Observed clicked-impression proxy eligibility
+linear_proxy,14,375266,375266.00000004284,438730,0.855346112643409,138109.00000004284,58.23526187295456,Observed clicked-impression proxy eligibility
+linear_proxy,30,438730,438729.99999982456,438730,0.9999999999996001,201572.99999982456,84.99559363620916,Observed clicked-impression proxy eligibility
+publisher,1,,237157.0,438730,0.5405534155403096,0.0,0.0,Fixed source flag; native window and eligibility unavailable
+publisher,7,,237157.0,438730,0.5405534155403096,0.0,0.0,Fixed source flag; native window and eligibility unavailable
+publisher,14,,237157.0,438730,0.5405534155403096,0.0,0.0,Fixed source flag; native window and eligibility unavailable
+publisher,30,,237157.0,438730,0.5405534155403096,0.0,0.0,Fixed source flag; native window and eligibility unavailable

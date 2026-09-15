@@ -8,8 +8,8 @@ from measurement.warehouse import connect
 LOG=logging.getLogger(__name__)
 TABLES=['daily_campaign_metrics','conversion_paths','conversion_lag_quantiles','conversion_lag_histogram',
  'last_click_attribution','first_click_attribution','linear_attribution','publisher_attribution','model_credits',
- 'window_comparison','campaign_reconciliation','daily_measurement']
-EXPORT=['daily_campaign_metrics','conversion_lag_quantiles','conversion_lag_histogram','window_comparison','campaign_reconciliation','daily_measurement']
+ 'window_comparison','campaign_reconciliation','daily_measurement','attribution_reconciliation']
+EXPORT=['daily_campaign_metrics','conversion_lag_quantiles','conversion_lag_histogram','window_comparison','campaign_reconciliation','daily_measurement','attribution_reconciliation']
 
 def run_sql(root):
     root=Path(root);con=connect(root)

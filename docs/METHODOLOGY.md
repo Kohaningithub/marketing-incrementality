@@ -60,3 +60,14 @@ Rolling baseline: previous seven complete non-boundary days, excluding current v
 ## F. Complementarity without linkage
 
 A and B share a publisher, not known users, advertisers, campaigns or dates. Never join them. No numerical campaign attribution-versus-causal overstatement, true monetary ROAS, incremental ROAS, budget amounts, geo effects, MMM or GeoLift is reported. The original Hillstrom analysis remains supplementary only.
+
+
+## September 15 extension: eligibility and qualified campaign ranks
+
+`attribution_reconciliation` exports method, window_days, eligible_conversions, attributed_conversions, share_of_observed_conversions, difference_vs_criteo and pct_difference_vs_criteo for all 16 method/window combinations. Observed conversions are the 438,730 canonical keys. Proxy eligibility counts distinct canonical keys in `attribution_candidates`. Criteo's native eligibility/window is unknown, so publisher eligibility stays NULL and its fixed benchmark repeats explicitly across comparison windows.
+
+`ranking.settings.json` fixes volume screening at >=10,000 impressions and >=100 observed canonical conversions across the entire release, independent of credit model. 286 of 675 campaigns qualify; this is descriptive screening, not a statistical power guarantee. All methods/windows rank the same cohort. Metrics are attributed count descending, transformed CPA ascending, and attributed / observed canonical conversion share descending. Rank is recomputed inside this cohort, using competition ties. Counts round to eight decimal places and ratios to twelve before ranking to avoid floating summation tie artifacts. Undefined metric values are omitted pairwise and paired N is reported.
+
+`campaign_rank_correlations.csv` contains Spearman correlations, mean/max absolute rank movements, changed-campaign counts and top-10 overlap for each pair, metric and window. Top-10 sets include ties at rank 10, so they can contain more than ten campaigns. `campaign_ranking_comparison.csv` contains individual qualified campaign ranks and signed/absolute changes versus Criteo. Correlations for constant vectors are undefined, not perfect agreement: at 30 days every proxy campaign's attributed conversion share is one, so these share correlations are NULL and all 286 are tied in the proxy top-rank set.
+
+At 30 days, Criteo versus last-click count ranks have rho .924661, 284 changed ranks, mean absolute change 24.17, max 100 and 9/10 top-10 overlap. Transformed CPA rho .846213, max change 146, top-10 overlap 8/10. Model choice can alter descriptive optimization candidates; it does not establish causal efficiency. First/last/linear produce equal campaign counts at fixed windows in the actual single-campaign conversion paths.
